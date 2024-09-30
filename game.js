@@ -56,7 +56,7 @@ let gameLoop = () => {
 };
 
 let update = () => {
-  // pacman.moveProcess()
+  pacman.moveProcess()
 };
 
 let draw = () => {
@@ -123,19 +123,12 @@ let drawWalls = () => {
   }
 };
 
-// let createNewPacman = () => {
-//   pacman = new Pacman(
-//     oneBlockSize, oneBlockSize, oneBlockSize, oneBlockSize, oneBlockSize / 7.5
-//   )
-// };
+let createNewPacman = () => {
+  pacman = new Pacman(
+    oneBlockSize, oneBlockSize, oneBlockSize, oneBlockSize, oneBlockSize / 7.5
+  )
+};
 
-// createNewPacman();
-// gameLoop();
-// 
-// window.addEventListener("keydown", (event) => {
-//   let k = event.keyCode
+createNewPacman();
+gameLoop();
 
-//   setTimeout(() => {
-
-//   }, 1) 
-// })
