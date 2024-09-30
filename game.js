@@ -13,7 +13,7 @@ let createRect = (x, y , width, height, color) =>{
 let fps = 30;
 let oneBlockSize = 20;
 let wallColor = "#342DCA";
-let wallSpaceWidth = oneBlockSize / 1.35;
+let wallSpaceWidth = oneBlockSize / 1.6;
 let wallOffset = (oneBlockSize - wallSpaceWidth) / 2;
 let wallInnerColor = "black"
 
@@ -59,9 +59,11 @@ let update = () => {
   pacman.moveProcess()
 };
 
+
 let draw = () => {
-  createRect(0, 0, canvas.width, canvas.height, "black" )
-  drawWalls()
+  createRect(0, 0, canvas.width, canvas.height, "black");
+  drawWalls();
+  drawFoods();
   pacman.draw();
 };
 
@@ -125,7 +127,7 @@ let drawWalls = () => {
 
 let createNewPacman = () => {
   pacman = new Pacman(
-    oneBlockSize, oneBlockSize, oneBlockSize, oneBlockSize, oneBlockSize / 7.5
+    oneBlockSize, oneBlockSize, oneBlockSize, oneBlockSize, oneBlockSize / 5
   )
 };
 
@@ -133,7 +135,7 @@ createNewPacman();
 gameLoop();
 
 window.addEventListener("keydown", (event) => {
-  let k = event.keyCode
+  let k = event.keyCode;
 
   setTimeout(() => {
     if (k == 37 || k == 65){ // left
@@ -149,4 +151,4 @@ window.addEventListener("keydown", (event) => {
       pacman.nextDirection = DIRECTION_DOWN
     }
   }, 1) 
-})
+});
