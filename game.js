@@ -19,6 +19,7 @@ let wallSpaceWidth = oneBlockSize / 1.6;  // Space inside walls for transparent 
 let wallOffset = (oneBlockSize - wallSpaceWidth) / 2;  // Offset for inner wall drawing
 let wallInnerColor = "black"
 let foodColor = "#FEB897"
+let score = 0
 
 const DIRECTION_RIGHT = 4;
 const DIRECTION_UP = 3;
@@ -59,7 +60,8 @@ let gameLoop = () => {
 };
 // Update function to handle pacman movement 
 let update = () => {
-  pacman.moveProcess()
+  pacman.moveProcess();
+  pacman.eat();
 };
 // Function to draw food on the map
 let drawFoods = () => {
@@ -78,12 +80,21 @@ let drawFoods = () => {
     }
   }
 };
+
+// Function to the the score on the bottom of the canvas
+let drawScore = () => {
+  canvasContext.font = "30px Emulogic";
+  canvasContext.fillStyle = "white";
+  canvasContext.fillText(`Score: ${score}`, 0, oneBlockSize * (map.length + 1) + 10);
+};
+
 // Main drawing function clears the canvas and draws all elements
 let draw = () => {
-  createRect(0, 0, canvas.width, canvas.height, "blue");
+  createRect(0, 0, canvas.width, canvas.height, "black");
   drawWalls();
   drawFoods();
   pacman.draw(); //draw pacman
+  drawScore();
 };
 // Start the game loop at the defined frame rate
 let gameInterval = setInterval(gameLoop, 1000/fps)

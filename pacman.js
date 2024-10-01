@@ -24,9 +24,20 @@ class Pacman {
       this.moveBackwards(); // if collision occurs, move pacman backwards
     }
   }
-
+  // Method for pacman eating food logic
   eat() {
-
+    for (let i = 0; i < map.length; i++) {
+      for (let j = 0; j < map[0].length; j++) {
+         // Check if the current map position has food and if Pacman's current position matches the food's position
+        if(map[i][j] == 2 && 
+          this.getMapX() == j && 
+          this.getMapY() == i
+        ) {
+          map[i][j] = 3; // Change the map value to 3, indicating the food has been eaten
+          score++; // Increase the score after eating the food
+        }
+      }
+    }
   }
   // Move pacman backwards based on the current direction
   moveBackwards() {
