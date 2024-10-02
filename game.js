@@ -17,9 +17,12 @@ let oneBlockSize = 20;
 let wallColor = "#342DCA";
 let wallSpaceWidth = oneBlockSize / 1.6;  // Space inside walls for transparent look
 let wallOffset = (oneBlockSize - wallSpaceWidth) / 2;  // Offset for inner wall drawing
-let wallInnerColor = "black"
-let foodColor = "#FEB897"
-let score = 0
+let wallInnerColor = "black";
+let foodColor = "#FEB897";
+let score = 0;
+let ghosts = [];
+let ghostImageLocations = [{x: 0, y: 0}, {x: 176 , y: 0}, {x: 0, y: 121}, {x: 176, y: 121}]
+let ghostCount = 4;
 
 const DIRECTION_RIGHT = 4;
 const DIRECTION_UP = 3;
@@ -88,13 +91,21 @@ let drawScore = () => {
   canvasContext.fillText(`Score: ${score}`, 0, oneBlockSize * (map.length + 1) + 10);
 };
 
+// Function to draw all the ghosts in the game 
+let drawGhosts = () => {
+  for (let i = 0; i < ghosts.length; i++){
+    ghosts[i].draw();
+  }
+}
+
 // Main drawing function clears the canvas and draws all elements
 let draw = () => {
-  createRect(0, 0, canvas.width, canvas.height, "black");
+  createRect(0, 0, canvas.width, canvas.height, "blue");
   drawWalls();
   drawFoods();
   pacman.draw(); //draw pacman
   drawScore();
+  drawGhosts(); // draw the ghosts
 };
 // Start the game loop at the defined frame rate
 let gameInterval = setInterval(gameLoop, 1000/fps)
@@ -156,6 +167,27 @@ let drawWalls = () => {
     }
   }
 };
+
+// Create instances of Ghosts 
+let createGhosts = () => {
+  ghosts = []
+  for (let i = 0; i < 4; i++) {
+    let newGhost = new Ghost(
+        9 * oneBlockSize + (i % 2 == 0 ? 0 : 1) * oneBlockSize,
+        10 * oneBlockSize + (i % 2 == 0 ? 0 : 1) * oneBlockSize,
+        oneBlockSize,
+        oneBlockSize,
+        pacman.speed / 2,
+        ghostImageLocations[i % 4].x,
+        ghostImageLocations[i % 4].y,
+        124,
+        116,
+        6 + i
+    );
+    ghosts.push(newGhost);
+  }
+};
+
 // Create a new Pacman instance
 let createNewPacman = () => {
   pacman = new Pacman(
@@ -164,6 +196,7 @@ let createNewPacman = () => {
 };
 
 createNewPacman();
+createGhosts();
 gameLoop(); // Start the game loop 
 
 // Event listener for keydown events to change Pacman's direction
