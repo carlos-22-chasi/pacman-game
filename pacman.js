@@ -89,7 +89,13 @@ class Pacman {
   }
 
   checkGhostCollisions() {
-
+    for (let i = 0; i < ghosts.length; i++){
+      let ghost = ghosts[i];
+      if(ghost.getMapX() == this.getMapX() && ghost.getMapY() == this.getMapY()) {
+        return true;
+      }
+    }
+    return false;
   }
   // Checks if it's possible to change direction and applies the new direction if valid
   changeDirectionsIfPossible() {

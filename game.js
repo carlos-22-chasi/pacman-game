@@ -23,6 +23,7 @@ let score = 0;
 let ghosts = [];
 let ghostImageLocations = [{x: 0, y: 0}, {x: 176 , y: 0}, {x: 0, y: 121}, {x: 176, y: 121}]
 let ghostCount = 4;
+let lives = 3;
 
 const DIRECTION_RIGHT = 4;
 const DIRECTION_UP = 3;
@@ -76,7 +77,43 @@ let update = () => {
   for (let i = 0; i < ghosts.length; i++){
     ghosts[i].moveProcess();
   }
+  if(pacman.checkGhostCollisions()){
+    restartGame();
+  }
 };
+
+let restartGame = () => {
+  createNewPacman();
+  createGhosts();
+  lives--;
+  if (lives == 0){
+    gameOver();
+  }
+};
+
+let gameOver = () => {
+  clearInterval(gameInterval);
+};
+
+let drawLives = () => {
+  canvasContext.font = "30px Arial";
+  canvasContext.fillStyle = "white";
+  canvasContext.fillText("Lives: ", 200, oneBlockSize * (map.length + 1) + 10);
+  for (let i = 0; i < lives; i++){
+    canvasContext.drawImage(
+      pacmanFrames, // image src for pacman
+      2 * oneBlockSize, // x position of the frame in the sprite sheet
+      0, // y position in the sprite sheet
+      oneBlockSize, // Width of the frame
+      oneBlockSize,  // Height of the frame
+      290 + (i * 1.5) * oneBlockSize, // Pacman's x position on the canvas
+      oneBlockSize * map.length + 10, // Pacman's y position on the canvas
+      oneBlockSize, // Pacman's width
+      oneBlockSize // Pacman's height
+    )
+  }
+}
+
 // Function to draw food on the map
 let drawFoods = () => {
   for(let i = 0; i < map.length; i++){
@@ -97,7 +134,7 @@ let drawFoods = () => {
 
 // Function to the the score on the bottom of the canvas
 let drawScore = () => {
-  canvasContext.font = "30px Emulogic";
+  canvasContext.font = "30px Arial";
   canvasContext.fillStyle = "white";
   canvasContext.fillText(`Score: ${score}`, 0, oneBlockSize * (map.length + 1) + 10);
 };
@@ -111,12 +148,13 @@ let drawGhosts = () => {
 
 // Main drawing function clears the canvas and draws all elements
 let draw = () => {
-  createRect(0, 0, canvas.width, canvas.height, "blue");
+  createRect(0, 0, canvas.width, canvas.height, "black");
   drawWalls();
   drawFoods();
   pacman.draw(); //draw pacman
   drawScore();
   drawGhosts(); // draw the ghosts
+  drawLives();
 };
 // Start the game loop at the defined frame rate
 let gameInterval = setInterval(gameLoop, 1000/fps)
