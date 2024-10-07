@@ -35,7 +35,7 @@ class Ghost {
     this.randomTargetIndex = this.randomTargetIndex % 4; // Ensure the index wraps around (0 to 3)
   }
 
-  // Method to process Pacman's movement logic
+  // Method to process ghost's movement logic
   moveProcess() {
     if (this.isInRange()) {  // If Pacman is within range, the ghost will target Pacman
       this.target = pacman;
@@ -49,22 +49,7 @@ class Ghost {
     }
   }
 
-  // Method for pacman eating food logic
-  eat() {
-    for (let i = 0; i < map.length; i++) {
-      for (let j = 0; j < map[0].length; j++) {
-         // Check if the current map position has food and if Pacman's current position matches the food's position
-        if(map[i][j] == 2 && 
-          this.getMapX() == j && 
-          this.getMapY() == i
-        ) {
-          map[i][j] = 3; // Change the map value to 3, indicating the food has been eaten
-          score++; // Increase the score after eating the food
-        }
-      }
-    }
-  }
-  // Move pacman backwards based on the current direction
+  // Move ghost backwards based on the current direction
   moveBackwards() {
     switch(this.direction){
       case DIRECTION_RIGHT:
@@ -81,7 +66,7 @@ class Ghost {
         break;
     }
   }
-  // Move pacman forwards based on the current direction
+  // Move ghost forwards based on the current direction
   moveForwards() {
     switch(this.direction){
       case DIRECTION_RIGHT:
@@ -98,7 +83,7 @@ class Ghost {
         break;
     }
   }
-  // Check if pacman collides with a wall
+  // Check if ghost collides with a wall
   checkCollisions() {
      // Check for collisions using Pacman's current position and the right side of Pacman
     if (
@@ -113,9 +98,6 @@ class Ghost {
 
   }
 
-  checkGhostCollisions() {
-
-  }
   // Checks if it's possible to change direction and applies the new direction if valid
   changeDirectionsIfPossible() {
     let tempDirection = this.direction;
@@ -208,11 +190,7 @@ class Ghost {
     return queue;
   }
 
-  // Updates the current frame of the Pacman animation
-  changeAnimation() {
-    this.currentFrame = (this.currentFrame == this.frameCount ? 1 : this.currentFrame + 1);
-  }
-  // Draws Pacman on the canvas with rotation based on direction
+  // Draws ghost on the canvas with rotation based on direction
   draw() {
     canvasContext.save(); // Saves the current canvas state
     // Draw pacman using the current animation frame
@@ -242,22 +220,21 @@ class Ghost {
     // );
     // canvasContext.stroke();
   }
-  
-  // Get Pacman's X position on the map grid
+
+  // Get ghosts's X position on the map grid
   getMapX() {
     return parseInt(this.x / oneBlockSize); // Convert x coordinate into a grid index
   }
-  // Get Pacman's Y position on the map grid
+  // Get ghosts's Y position on the map grid
   getMapY() {
     return parseInt(this.y / oneBlockSize); // Convert the Y coordinate into a grid index
   }
-  // Get Pacman's X position for the right side of its body on the map grid
+  // Get ghosts's X position for the right side of its body on the map grid
   getMapXRightSide(){
     return parseInt((this.x + 0.99999 * oneBlockSize) / oneBlockSize); // Adjust for right edge of Pacman
   }
-  // Get Pacman's Y position for the right side of its body on the map grid
+  // Get ghosts's Y position for the right side of its body on the map grid
   getMapYRightSide(){
     return parseInt((this.y + 0.99999 * oneBlockSize) / oneBlockSize); // Adjust for bottom edge of Pacman
   }
-
 }

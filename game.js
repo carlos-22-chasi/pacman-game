@@ -58,7 +58,7 @@ let map = [
   [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
-
+// find the total amount of food on the board
 for(let i = 0; i < map.length; i++){
   for(let j = 0; j < map[0].length; j++){
       if(map[i][j] == 2){
@@ -66,7 +66,7 @@ for(let i = 0; i < map.length; i++){
     }
   }
 }
-
+// give ghosts a random target to follow
 let randomTargetsForGhosts = [
   {x: 1 * oneBlockSize, y: 1 * oneBlockSize },
   {x: 1 * oneBlockSize, y: (map.length - 2) * oneBlockSize },
@@ -96,7 +96,7 @@ let update = () => {
     winGame();
   }
 };
-
+// allow pacman to swap sides of the map 
 let swapSides = () => {
   if (pacman.getMapX() > 20) { 
     pacman = new Pacman(0, oneBlockSize * 10, oneBlockSize, oneBlockSize, oneBlockSize / 5) 
@@ -106,18 +106,20 @@ let swapSides = () => {
   }
   
 }
-
+// stop game from running when won
 let winGame = () => {
   clearInterval(gameInterval);
   drawWin();
 };
 
+// draw winning sentence
 let drawWin = () => {
   canvasContext.font = "bold 50px Arial";
   canvasContext.fillStyle = "white";
   canvasContext.fillText("You Won!", 90, 235);
 };
 
+// move all ghosts and pacman to origin and check if game over
 let restartGame = () => {
   createNewPacman();
   createGhosts();
@@ -128,17 +130,20 @@ let restartGame = () => {
   }
 };
 
+// stop game from running when lost
 let gameOver = () => {
   clearInterval(gameInterval);
   drawGameOver();
 };
 
+// draw losing sentence
 let drawGameOver = () => {
   canvasContext.font = "bold 50px Arial";
   canvasContext.fillStyle = "white";
   canvasContext.fillText("Game Over!", 60, 235);
 };
 
+// draw the amount of lives left on the canvas
 let drawLives = () => {
   canvasContext.font = "bold 30px Arial";
   canvasContext.fillStyle = "white";
