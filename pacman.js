@@ -1,11 +1,11 @@
 class Pacman { 
-  constructor(x, y , width, height, speed){
+  constructor(x, y , width, height, speed, direction = DIRECTION_RIGHT){
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
     this.speed = speed;
-    this.direction = DIRECTION_RIGHT;
+    this.direction = direction;
     this.nextDirection = this.direction;
     this.currentFrame = 1; 
     this.frameCount = 7; // Total number of frames in the animation

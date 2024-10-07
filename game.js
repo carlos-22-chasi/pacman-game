@@ -83,6 +83,9 @@ let gameLoop = () => {
 let update = () => {
   pacman.moveProcess();
   pacman.eat();
+  if (pacman.getMapX() < 0 || pacman.getMapX() > 20) {
+    swapSides();
+  }
   for (let i = 0; i < ghosts.length; i++){
     ghosts[i].moveProcess();
   }
@@ -94,6 +97,16 @@ let update = () => {
   }
 };
 
+let swapSides = () => {
+  if (pacman.getMapX() > 20) { 
+    pacman = new Pacman(0, oneBlockSize * 10, oneBlockSize, oneBlockSize, oneBlockSize / 5) 
+  }
+  else {
+    pacman = new Pacman(21 * oneBlockSize, oneBlockSize * 10, oneBlockSize, oneBlockSize, oneBlockSize / 5, DIRECTION_LEFT)
+  }
+  
+}
+
 let winGame = () => {
   clearInterval(gameInterval);
   drawWin();
@@ -102,7 +115,7 @@ let winGame = () => {
 let drawWin = () => {
   canvasContext.font = "bold 50px Arial";
   canvasContext.fillStyle = "white";
-  canvasContext.fillText("You Won!", 60, 235);
+  canvasContext.fillText("You Won!", 90, 235);
 };
 
 let restartGame = () => {
@@ -110,6 +123,7 @@ let restartGame = () => {
   createGhosts();
   lives--;
   if (lives == 0){
+    drawLives();
     gameOver();
   }
 };
