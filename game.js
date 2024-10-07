@@ -24,6 +24,7 @@ let ghosts = [];
 let ghostImageLocations = [{x: 0, y: 0}, {x: 176 , y: 0}, {x: 0, y: 121}, {x: 176, y: 121}]
 let ghostCount = 4;
 let lives = 3;
+let foodCount = 0;
 
 const DIRECTION_RIGHT = 4;
 const DIRECTION_UP = 3;
@@ -58,6 +59,14 @@ let map = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
 
+for(let i = 0; i < map.length; i++){
+  for(let j = 0; j < map[0].length; j++){
+      if(map[i][j] == 2){
+       foodCount++
+    }
+  }
+}
+
 let randomTargetsForGhosts = [
   {x: 1 * oneBlockSize, y: 1 * oneBlockSize },
   {x: 1 * oneBlockSize, y: (map.length - 2) * oneBlockSize },
@@ -67,8 +76,8 @@ let randomTargetsForGhosts = [
 
 // Main game loop where it updates and redraws the game at each frame
 let gameLoop = () => {
-  update()
-  draw()
+  draw();
+  update();
 };
 // Update function to handle pacman movement 
 let update = () => {
@@ -80,6 +89,20 @@ let update = () => {
   if(pacman.checkGhostCollisions()){
     restartGame();
   }
+  if (score >= foodCount) {
+    winGame();
+  }
+};
+
+let winGame = () => {
+  clearInterval(gameInterval);
+  drawWin();
+};
+
+let drawWin = () => {
+  canvasContext.font = "bold 50px Arial";
+  canvasContext.fillStyle = "white";
+  canvasContext.fillText("You Won!", 60, 235);
 };
 
 let restartGame = () => {
@@ -93,10 +116,17 @@ let restartGame = () => {
 
 let gameOver = () => {
   clearInterval(gameInterval);
+  drawGameOver();
+};
+
+let drawGameOver = () => {
+  canvasContext.font = "bold 50px Arial";
+  canvasContext.fillStyle = "white";
+  canvasContext.fillText("Game Over!", 60, 235);
 };
 
 let drawLives = () => {
-  canvasContext.font = "30px Arial";
+  canvasContext.font = "bold 30px Arial";
   canvasContext.fillStyle = "white";
   canvasContext.fillText("Lives: ", 200, oneBlockSize * (map.length + 1) + 10);
   for (let i = 0; i < lives; i++){
@@ -134,7 +164,7 @@ let drawFoods = () => {
 
 // Function to the the score on the bottom of the canvas
 let drawScore = () => {
-  canvasContext.font = "30px Arial";
+  canvasContext.font = "bold 30px Arial";
   canvasContext.fillStyle = "white";
   canvasContext.fillText(`Score: ${score}`, 0, oneBlockSize * (map.length + 1) + 10);
 };

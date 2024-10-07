@@ -229,7 +229,20 @@ class Ghost {
     );
 
     canvasContext.restore(); // Restore the canvas state after drawing
+
+    // !!! draw the range of the ghosts  !!!!
+    // canvasContext.beginPath();
+    // canvasContext.strokeStyle = "red"
+    // canvasContext.arc(
+    //   this.x + oneBlockSize / 2,
+    //   this.y + oneBlockSize / 2,
+    //   this.range * oneBlockSize, 
+    //   0, 
+    //   2 * Math.PI
+    // );
+    // canvasContext.stroke();
   }
+  
   // Get Pacman's X position on the map grid
   getMapX() {
     return parseInt(this.x / oneBlockSize); // Convert x coordinate into a grid index
