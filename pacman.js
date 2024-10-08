@@ -35,6 +35,7 @@ class Pacman {
         ) {
           map[i][j] = 3; // Change the map value to 3, indicating the food has been eaten
           score++; // Increase the score after eating the food
+          eatFruitSound.play();
         }
       }
     }

@@ -2,8 +2,15 @@
 const canvas = document.getElementById("canvas");
 const canvasContext = canvas.getContext("2d");
 // Get the image elements for Pacman and ghost animations
-const pacmanFrames = document.getElementById("animations")
-const ghostFrames = document.getElementById("ghosts")
+const pacmanFrames = document.getElementById("animations");
+const ghostFrames = document.getElementById("ghosts");
+// Preload sound effects
+const moveSound = new Audio('assests/pacman_chomp.wav');        // Movement sound
+const deathSound = new Audio('assests/pacman_death.wav');          // Death sound
+const eatFruitSound = new Audio('assests/pacman_eatfruit.wav'); // Eating sound
+const eatGhostSound = new Audio('assests/pacman_eatghost.wav');          // Win sound
+
+eatFruitSound.volume = 0.3;
 
 // Function to draw rectangles onto the board 
 // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle
@@ -12,6 +19,8 @@ let createRect = (x, y , width, height, color) =>{
   canvasContext.fillRect(x,y,width,height, color); // Draw the rectangle
 };
 
+let gameStarted = false;
+let gamePaused = false;
 let fps = 30;
 let oneBlockSize = 20;
 let wallColor = "#342DCA";
@@ -77,23 +86,32 @@ let randomTargetsForGhosts = [
 // Main game loop where it updates and redraws the game at each frame
 let gameLoop = () => {
   draw();
-  update();
+  if (gameStarted) {
+    update();
+  }
 };
+
 // Update function to handle pacman movement 
 let update = () => {
-  pacman.moveProcess();
-  pacman.eat();
-  if (pacman.getMapX() < 0 || pacman.getMapX() > 20) {
-    swapSides();
-  }
-  for (let i = 0; i < ghosts.length; i++){
-    ghosts[i].moveProcess();
-  }
-  if(pacman.checkGhostCollisions()){
-    restartGame();
-  }
-  if (score >= foodCount) {
-    winGame();
+  if (!gamePaused){
+    pacman.moveProcess();
+    moveSound.play();
+
+    pacman.eat();
+
+    if (pacman.getMapX() < 0 || pacman.getMapX() > 20) {
+      swapSides();
+    }
+    for (let i = 0; i < ghosts.length; i++){
+      ghosts[i].moveProcess();
+    }
+    if(pacman.checkGhostCollisions()){
+      deathSound.play();
+      pauseGame();
+    }
+    if (score >= foodCount) {
+      winGame();
+    }
   }
 };
 // allow pacman to swap sides of the map 
@@ -105,6 +123,13 @@ let swapSides = () => {
     pacman = new Pacman(21 * oneBlockSize, oneBlockSize * 10, oneBlockSize, oneBlockSize, oneBlockSize / 5, DIRECTION_LEFT)
   }
   
+}
+let pauseGame = () => {
+  gamePaused = true;
+  setTimeout(() => {
+    gamePaused = false
+    restartGame();   // Restart game after the pause
+  }, 1500);
 }
 // stop game from running when won
 let winGame = () => {
@@ -207,6 +232,11 @@ let draw = () => {
 };
 // Start the game loop at the defined frame rate
 let gameInterval = setInterval(gameLoop, 1000/fps)
+
+// Start the game after 4 seconds
+setTimeout(() => {
+  gameStarted = true;
+}, 4400);
 
 let drawWalls = () => {
   for(let i = 0; i < map.length; i++){
