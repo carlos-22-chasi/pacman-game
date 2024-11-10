@@ -5,12 +5,13 @@ const canvasContext = canvas.getContext("2d");
 const pacmanFrames = document.getElementById("animations");
 const ghostFrames = document.getElementById("ghosts");
 // Preload sound effects
-const moveSound = new Audio('assests/pacman_chomp.wav');        // Movement sound
-const deathSound = new Audio('assests/pacman_death.wav');          // Death sound
-const eatFruitSound = new Audio('assests/pacman_eatfruit.wav'); // Eating sound
-const eatGhostSound = new Audio('assests/pacman_eatghost.wav');          // Win sound
+const moveSound = new Audio('assets/sounds/pacman_chomp.wav');        // Movement sound
+const deathSound = new Audio('assets/sounds/pacman_death.wav');          // Death sound
+const eatFruitSound = new Audio('assets/sounds/pacman_eatfruit.wav'); // Eating sound
+const eatGhostSound = new Audio('assets/sounds/pacman_eatghost.wav');          // Win sound
 
-eatFruitSound.volume = 0.3;
+eatFruitSound.volume = 0.2;
+moveSound.playbackRate = 1.1;
 
 // Function to draw rectangles onto the board 
 // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle
@@ -114,6 +115,7 @@ let update = () => {
     }
   }
 };
+
 // allow pacman to swap sides of the map 
 let swapSides = () => {
   if (pacman.getMapX() > 20) { 
@@ -139,9 +141,9 @@ let winGame = () => {
 
 // draw winning sentence
 let drawWin = () => {
-  canvasContext.font = "bold 50px Arial";
+  canvasContext.font = "bold 50px Pixel Emulator";
   canvasContext.fillStyle = "white";
-  canvasContext.fillText("You Won!", 90, 235);
+  canvasContext.fillText("You Won!", 60, 235);
 };
 
 // move all ghosts and pacman to origin and check if game over
@@ -150,6 +152,7 @@ let restartGame = () => {
   createGhosts();
   lives--;
   if (lives == 0){
+    gamePaused = true;
     drawLives();
     gameOver();
   }
@@ -157,20 +160,22 @@ let restartGame = () => {
 
 // stop game from running when lost
 let gameOver = () => {
-  clearInterval(gameInterval);
-  drawGameOver();
+  setTimeout(() => {
+    clearInterval(gameInterval);
+    drawGameOver();
+  }, 10);
 };
 
 // draw losing sentence
 let drawGameOver = () => {
-  canvasContext.font = "bold 50px Arial";
+  canvasContext.font = "bold 50px Pixel Emulator";
   canvasContext.fillStyle = "white";
-  canvasContext.fillText("Game Over!", 60, 235);
+  canvasContext.fillText("Game Over!", 30, 235);
 };
 
 // draw the amount of lives left on the canvas
 let drawLives = () => {
-  canvasContext.font = "bold 30px Arial";
+  canvasContext.font = "bold 25px Pixel Emulator";
   canvasContext.fillStyle = "white";
   canvasContext.fillText("Lives: ", 200, oneBlockSize * (map.length + 1) + 10);
   for (let i = 0; i < lives; i++){
@@ -180,8 +185,8 @@ let drawLives = () => {
       0, // y position in the sprite sheet
       oneBlockSize, // Width of the frame
       oneBlockSize,  // Height of the frame
-      290 + (i * 1.5) * oneBlockSize, // Pacman's x position on the canvas
-      oneBlockSize * map.length + 10, // Pacman's y position on the canvas
+      310 + (i * 1.5) * oneBlockSize, // Pacman's x position on the canvas
+      oneBlockSize * map.length + 12, // Pacman's y position on the canvas
       oneBlockSize, // Pacman's width
       oneBlockSize // Pacman's height
     )
@@ -208,7 +213,7 @@ let drawFoods = () => {
 
 // Function to the the score on the bottom of the canvas
 let drawScore = () => {
-  canvasContext.font = "bold 30px Arial";
+  canvasContext.font = "bold 25px Pixel Emulator";
   canvasContext.fillStyle = "white";
   canvasContext.fillText(`Score: ${score}`, 0, oneBlockSize * (map.length + 1) + 10);
 };
@@ -234,9 +239,11 @@ let draw = () => {
 let gameInterval = setInterval(gameLoop, 1000/fps)
 
 // Start the game after 4 seconds
-setTimeout(() => {
-  gameStarted = true;
-}, 4400);
+let startGame = () => {
+  setTimeout(() => {
+    gameStarted = true;
+  }, 4400);
+}
 
 let drawWalls = () => {
   for(let i = 0; i < map.length; i++){

@@ -5,24 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pacman</title>
   <link rel="stylesheet" href="style.css">
+  <
 </head>
 
 <body>
-
-  <canvas id="canvas" width="500" height="500"></canvas>
-
-  <audio id="background-sound" autoplay preload="auto">
-    <source src="assests/pacman_beginning.wav" type="audio/wav">
-  </audio>
-
-  <div style="display: none;">
-    <img id="animations" src="assests/animations.gif" alt="">
-    <img id="ghosts" src="assests/ghost.png" alt="">
+   <!-- Overlay with Start Game button -->
+  <div id="overlay">
+    <button id="start-button">Start Game</button>
   </div>
-
+  <!-- Game Canvas  -->
+  <canvas id="canvas" width="420" height="500"></canvas>
+  <!-- Background Sound -->
+  <audio id="background-sound" preload="auto">
+    <source src="assets/sounds/pacman_beginning.wav" type="audio/wav">
+  </audio>
+  <!-- Animations -->
+  <div style="display: none;">
+    <img id="animations" src="assets/animations/animations.gif" alt="">
+    <img id="ghosts" src="assets/animations/ghost.png" alt="">
+    <img id="pacman-gif" src="assets//animations/pacman_death.gif" alt="Pacman GIF">
+  </div>
+  
+  <!-- Game scripts -->
   <script src="ghost.js"></script>
   <script src="pacman.js"></script>
   <script src="game.js"></script>
+  <script src="startScreen.js"></script>
   
 </body>
 </html>
